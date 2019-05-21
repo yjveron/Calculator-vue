@@ -1,28 +1,13 @@
 <template>
     <div id="calculator">
+        <div class="usedEquation">{{usedEquation}}</div>
         <input type="text" class="input" v-model="equation" @keyup.enter="compute()" @keyup.esc="reset()"><br>
         <div class="buttons">
             <button @click="reset()">C</button>
-            <button @click="buildEquation()">+/-</button> <!-- IDK PA HOW I PLAN ON DOING THIS -->
-            <button @click="buildEquation('%')">%</button>
-            <button @click="buildEquation('/')">/</button>
-            <button @click="buildEquation(7)">7</button>
-            <button @click="buildEquation(8)">8</button>
-            <button @click="buildEquation(9)">9</button>
-            <button @click="buildEquation('*')">x</button>
-            <button @click="buildEquation(4)">4</button>
-            <button @click="buildEquation(5)">5</button>
-            <button @click="buildEquation(6)">6</button>
-            <button @click="buildEquation('-')">-</button>
-            <button @click="buildEquation(1)">1</button>
-            <button @click="buildEquation(2)">2</button>
-            <button @click="buildEquation(3)">3</button>
-            <button @click="buildEquation('+')">+</button>
-            <button @click="buildEquation(0)">0</button>
-            <button @click="buildEquation('.')">.</button>
+            <button @click="alert('I am buggy')">+/-</button>
+            <button v-for="(button, index) in buttons" v-bind:key="index" @click="buildEquation(button.content)">{{button.content}}</button>
             <button class="equals" @click="compute()">=</button><br><br>
         </div>
-        {{answer}}
     </div>
 </template>
 
@@ -33,8 +18,15 @@ export default {
     data() {
         return {
             equation: '',
-            equationRight: '',
-            answer: 0
+            usedEquation: '',
+            answer: 0,
+            buttons: [
+                {content: '%'},{content: '/'},
+                {content: 7},{content: 8},{content: 9},{content: '*'},
+                {content: 4},{content: 5},{content: 6},{content: '-'},
+                {content: 1},{content: 2},{content: 3},{content: '+'},
+                {content: 0}, {content: '.'},
+            ]
         }
     },
     methods: {
@@ -46,14 +38,19 @@ export default {
         },
         compute(){
             // IF END OF STRING IS + - * / PRESENT ERROR MESSAGE
+            this.usedEquation = this.equation
             this.answer = eval(this.equation)
-            // HOW TO MAKE IT SO THAT THE ANSWER REPLACES EQUATION IN THE INPUT BOX
+            this.equation = this.answer
         },
         reset(){
+            this.usedEquation = '';
             this.equation = '';
             this.answer = 0;
+        },
+        alert(val){
+            alert(val)
         }
-    }
+    },
 }
 </script>
 
@@ -67,16 +64,25 @@ export default {
     border-radius: 5px;
 }
 
+.usedEquation,
 .input {
-    height: 100px;
     width: 100%;
+    background-color: #202020;  
     text-align: right;
-    font-size: 3rem;
-    padding-top: 40px;
-    background-color: #202020;
     border: none;
+}
+
+.usedEquation {
+    height: 30px;
+    color: lightgrey;
+    padding-top: 10px;
+}
+
+.input {
+    height: 70px;
     color: white;
-    text-overflow: clip;
+    font-size: 3rem;
+    padding-top: 30px;
 }
 
 .buttons {
