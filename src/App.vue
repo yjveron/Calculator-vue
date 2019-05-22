@@ -1,7 +1,13 @@
 <template>
+<!-- OR WHAT IF CALCULATOR IS THE PARENT COMPONENT OF RECENT EQUATIONS, IMBIS NA APP IS PARENT OF RECENT
+EQUATIONS. KASO.. SMART BA YUN? -->
+
   <div id="app">
-    
-    <Calculator />
+    <Calculator v-bind:equation="equation" @compute="saveEquation($event)" />
+    <ol class="hi">
+      <h3>Recent Equations</h3>
+      <li v-for="(item, index) in recentEquations" v-bind:key="index">{{item}}</li>
+    </ol>
   </div>
 </template>
 
@@ -12,6 +18,19 @@ export default {
   name: 'app',
   components: {
     Calculator
+  },
+  data() {
+    return{
+      equation: '',
+      recentEquations: []
+    }
+  },
+  methods: {
+    saveEquation(pulledEquation){
+      this.equation = pulledEquation
+      this.recentEquations.push(
+        this.equation)
+    }
   }
 }
 </script>
@@ -24,7 +43,8 @@ export default {
 }
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  margin: 0 auto;
+  display: flex;
+  justify-content: center;
   margin-top: 60px;
   width: 100vw;
   text-align: center;
@@ -32,5 +52,9 @@ export default {
   /* -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50; */
+}
+
+.hi{
+  margin-left: 30px;
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
     <div id="calculator">
         <div class="usedEquation">{{usedEquation}}</div>
-        <input type="text" class="input" v-model="equation" @keyup.enter="compute()" @keyup.esc="reset()"><br>
+        <input type="text" class="input" v-model="equation" @keyup.enter="compute()" @keyup.esc="reset()" ><br>
         <div class="buttons">
             <button @click="reset()">C</button>
             <button @click="alert('I am buggy')">+/-</button>
@@ -17,7 +17,6 @@ export default {
     name: 'Calculator',
     data() {
         return {
-            equation: '',
             usedEquation: '',
             answer: 0,
             buttons: [
@@ -29,6 +28,9 @@ export default {
             ]
         }
     },
+    props: [
+        'equation'
+    ],
     methods: {
         buildEquation(val){
             // IF INPUT IS + - * / REMOVE FIRST INPUT MOVE TO TOP
@@ -41,6 +43,7 @@ export default {
             this.usedEquation = this.equation
             this.answer = eval(this.equation)
             this.equation = this.answer
+            this.$emit('compute', this.usedEquation)
         },
         reset(){
             this.usedEquation = '';
@@ -60,7 +63,6 @@ export default {
     width: 300px;
     height: 100%;
     background-color: silver;
-    margin: 0 auto;
     border-radius: 5px;
 }
 
